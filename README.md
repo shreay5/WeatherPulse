@@ -1,5 +1,5 @@
-# SkySense
-SkySense is an API-centered web application that provides real-time weather updates and air quality monitoring along with health advisories. The application focuses on environmental awareness by visualizing AQI levels and suggesting preventive measures to protect users’ health.
+# WeatherPulse
+WeatherPulse is an API-centered web application that provides real-time weather updates and air quality monitoring along with health advisories. The application focuses on environmental awareness by visualizing AQI levels and suggesting preventive measures to protect users’ health.
 
 🚀 Live Features
 🌍 Automatic Location Detection using browser Geolocation API
