@@ -9,14 +9,26 @@ A professional government weather website built with vanilla JavaScript, featuri
 - **Manual Search**: Search for any city worldwide
 - Clean, intuitive interface for easy navigation
 
-### Weather Dashboard
+### 🌈 Weather Dashboard
 A comprehensive weather display inspired by government weather services like NOAA and UK Met Office.
 
-**Key Weather Details:**
-- 💨 Wind Speed (km/h)
-- 💧 Humidity (%)
-- 🌡 Feels Like Temperature (°C)
-- 💨 Wind Gust Speed (km/h)
+**Main Weather Section:**
+- Large temperature display with real-time conditions
+- Weather emoji indicator
+- 8-parameter detail cards:
+  - 💨 Wind Speed & Wind Gust
+  - 💧 Humidity
+  - 🌡 Feels Like Temperature
+  - ☀️ UV Index
+  - 🌅/🌇 Sunrise & Sunset times
+  - 👁️ Visibility
+
+### 📅 7-Day Weather Forecast
+- Daily weather predictions for the next week
+- Min/Max temperatures for each day
+- Weather conditions and icons
+- Rainfall probability
+- Interactive forecast cards with hover effects
 
 ### 🌫 Air Quality Index (AQI)
 - Real-time AQI score display
@@ -32,6 +44,18 @@ A comprehensive weather display inspired by government weather services like NOA
 - **201-300 (Very Unhealthy)**: Health alert - increased risk for everyone
 - **301-500 (Hazardous)**: Health warning - entire population affected
 
+### 🌼 Pollen & Allergy Information
+- Real-time pollen level assessment
+- Wind-based pollen calculation
+- Alerts during high pollen days
+- Recommendations for allergy sufferers
+
+### ☀️ UV Index & Sun Information
+- Current UV index reading
+- Sunrise and sunset times
+- Day length information
+- UV protection recommendations
+
 ### 💡 Smart Weather Tips
 Intelligent, context-aware tips based on current weather conditions:
 - Temperature warnings (extreme heat/cold)
@@ -39,6 +63,7 @@ Intelligent, context-aware tips based on current weather conditions:
 - Wind warnings
 - Precipitation notifications
 - UV and activity recommendations
+- Multiple actionable suggestions per category
 
 
 ## Technology Stack
@@ -134,6 +159,15 @@ To modify the app:
 2. Modify `script.js` for functionality
 3. Update `style.css` for styling
 
+## What's New (v2.0)
+
+✅ **7-Day Forecast** - Extended weather predictions with daily min/max temps
+✅ **UV Index** - Real-time ultraviolet exposure levels
+✅ **Sunrise/Sunset Times** - Astronomical twilight data
+✅ **Pollen Alerts** - Wind-based pollen level assessment
+✅ **Enhanced Weather Details** - Visibility, pressure, and wind gusts
+✅ **Responsive Forecast Grid** - Beautiful 7-day card layout
+✅ **Additional Details Section** - Pressure, pollen, and visibility info
 
 ## Troubleshooting
 

@@ -21,7 +21,7 @@ function autoDetectLocation() {
 }
 
 function getWeatherByCoordinates(latitude, longitude) {
-  const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&aqi=yes`;
+  const url = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=7&aqi=yes`;
 
   fetch(url)
     .then(response => response.json())
@@ -48,7 +48,7 @@ function getWeatherByCity() {
   }
 
   errorDiv.innerHTML = "🔍 Searching...";
-  const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`;
+  const url = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=7&aqi=yes`;
 
   fetch(url)
     .then(response => response.json())
@@ -87,28 +87,34 @@ function displayDashboard(data) {
   document.getElementById("humidity").innerHTML = `${data.current.humidity}%`;
   document.getElementById("feelsLike").innerHTML = `${Math.round(data.current.feelslike_c)}°`;
   document.getElementById("gustSpeed").innerHTML = `${Math.round(data.current.gust_kph)} km/h`;
+  
+  // New details
+  document.getElementById("uvIndex").innerHTML = data.current.uv?.toFixed(1) || "--";
+  document.getElementById("sunrise").innerHTML = data.forecast?.forecastday[0]?.astro?.sunrise || "--";
+  document.getElementById("sunset").innerHTML = data.forecast?.forecastday[0]?.astro?.sunset || "--";
+  document.getElementById("visibility").innerHTML = `${data.current.vis_km} km`;
 
-  // Air Quality - Generate based on weather conditions if AQI not available
+  // Air Quality
   if (data.current.air_quality) {
     const aqiIndex = data.current.air_quality.us_epa_index || data.current.air_quality.gb_defra_index;
     if (aqiIndex) {
       displayAQI(aqiIndex);
     } else {
-      // Generate estimated AQI from weather conditions
       const estimatedScore = estimateAQIScore(data.current);
       displayAQI(estimatedScore);
     }
   } else {
-    // Generate estimated AQI from weather conditions
     const estimatedScore = estimateAQIScore(data.current);
     displayAQI(estimatedScore);
   }
-  
-  // Log for debugging
-  console.log("Air Quality Data:", data.current.air_quality);
 
   // Weather tips
   generateWeatherTips(data.current);
+  
+  // 7-Day Forecast
+  if (data.forecast) {
+    displayForecast(data.forecast.forecastday);
+  }
 }
 
 function goBackToLocation() {
@@ -189,38 +195,38 @@ function generateWeatherTips(current) {
 
   if (current.temp_c > 30) {
   tips.push("🌡️ High temperature: Stay hydrated and drink plenty of water");
-  tips.push("🧴 Use sunscreen to protect your skin from UV rays");
+  tips.push(" Use sunscreen to protect your skin from UV rays");
   tips.push("🏠 Avoid going out during peak afternoon hours");
 }
 
 if (current.temp_c < 10) {
   tips.push("❄️ Cold weather: Wear warm and layered clothing");
   tips.push("🧣 Protect extremities like hands, ears, and feet");
-  tips.push("🔥 Keep yourself warm with hot beverages");
+  tips.push("Keep yourself warm with hot beverages");
 }
 
 if (current.wind_kph > 30) {
   tips.push("💨 Strong winds: Secure loose objects outdoors");
-  tips.push("🚶 Avoid walking near trees or unstable structures");
+  tips.push("Avoid walking near trees or unstable structures");
   tips.push("🚗 Drive carefully as strong winds can affect control");
 }
 
 if (current.humidity > 80) {
   tips.push("💧 High humidity: Stay hydrated as you may sweat more");
-  tips.push("😓 Wear light, breathable clothes");
-  tips.push("🌬 Use fans or AC to stay comfortable");
+  tips.push(" Wear light, breathable clothes");
+  tips.push(" Use fans or AC to stay comfortable");
 }
 
 if (current.humidity < 30) {
   tips.push("🌵 Low humidity: Use moisturizer to prevent dry skin");
-  tips.push("💧 Drink water frequently to stay hydrated");
-  tips.push("👄 Use lip balm to avoid chapped lips");
+  tips.push(" Drink water frequently to stay hydrated");
+  tips.push(" Use lip balm to avoid chapped lips");
 }
 
 if (current.condition.text.toLowerCase().includes("rain")) {
   tips.push("🌧️ Rain expected: Carry an umbrella or raincoat");
-  tips.push("👟 Wear waterproof footwear to avoid slipping");
-  tips.push("⚡ Be cautious of waterlogged areas and traffic delays");
+  tips.push("  Wear waterproof footwear to avoid slipping");
+  tips.push("  Be cautious of waterlogged areas and traffic delays");
 }
 
 if (current.condition.text.toLowerCase().includes("snow")) {
@@ -244,4 +250,38 @@ if (tips.length === 0) {
 
   document.getElementById("weatherTips").innerHTML = tips.map(tip => `<p>${tip}</p>`).join("");
 }
+
+function displayForecast(forecastData) {
+  const forecastContainer = document.getElementById("forecastContainer");
+  forecastContainer.innerHTML = "";
+  
+  forecastData.forEach((day, index) => {
+    const date = new Date(day.date);
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const dayDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    
+    const maxTemp = Math.round(day.day.maxtemp_c);
+    const minTemp = Math.round(day.day.mintemp_c);
+    const condition = day.day.condition.text;
+    const icon = getWeatherIcon(day.day.condition.code, true);
+    const rainChance = day.day.daily_chance_of_rain;
+    
+    const forecastCard = document.createElement('div');
+    forecastCard.className = 'forecast-card';
+    forecastCard.innerHTML = `
+      <div class="forecast-day">${dayName}</div>
+      <div class="forecast-date">${dayDate}</div>
+      <div class="forecast-icon">${icon}</div>
+      <div class="forecast-condition">${condition}</div>
+      <div class="forecast-temps">
+        <span class="max-temp">${maxTemp}°</span>
+        <span class="min-temp">${minTemp}°</span>
+      </div>
+    
+    `;
+    forecastContainer.appendChild(forecastCard);
+  });
+}
+
+
 
