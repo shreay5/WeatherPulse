@@ -3,23 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Weather App</title>
+  <title>WeatherPulse</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="weather-container">
-    <h1>🌤 Weather App</h1>
+  <!-- Location Selection Screen -->
+  <div id="locationScreen" class="location-screen">
+    <div class="location-card">
+      <h1>🌤 WeatherPulse</h1>
+      <p class="subtitle">Your Daily Weather & AQI Companion</p>
 
-    <input 
-      type="text" 
-      id="locationInput" 
-      placeholder="Enter city name"
-    />
+      <button onclick="autoDetectLocation()" class="btn-primary"> Auto-detect Location</button>
+      <p class="divider">OR</p>
 
-    <button onclick="getWeather()">Get Weather</button>
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="locationInput" 
+          placeholder="Enter city name"
+        />
+        <button onclick="getWeatherByCity()" class="btn-secondary">Search</button>
+      </div>
 
-    <div id="weatherResult" class="result"></div>
+      <div id="locationError" class="error-message"></div>
+    </div>
+  </div>
+
+  <!-- Weather Dashboard -->
+  <div id="weatherDashboard" class="weather-dashboard" style="display: none;">
+    <div class="dashboard-header">
+      <button onclick="goBackToLocation()" class="btn-back">← Change Location</button>
+      <h2 id="locationName"></h2>
+    </div>
+
+    <div class="main-weather">
+      <div class="temperature-section">
+        <div id="temperature" class="temperature">--°</div>
+        <div id="condition" class="condition">--</div>
+      </div>
+      <div id="weatherIcon" class="weather-icon">🌤</div>
+    </div>
+
+    <div class="key-details">
+      <div class="detail-card">
+        <span class="detail-label">💨 Wind</span>
+        <span id="windSpeed" class="detail-value">-- km/h</span>
+      </div>
+      <div class="detail-card">
+        <span class="detail-label">💧 Humidity</span>
+        <span id="humidity" class="detail-value">--%</span>
+      </div>
+      <div class="detail-card">
+        <span class="detail-label">🌡 Feels Like</span>
+        <span id="feelsLike" class="detail-value">--°</span>
+      </div>
+      <div class="detail-card">
+        <span class="detail-label">💨 Gust</span>
+        <span id="gustSpeed" class="detail-value">-- km/h</span>
+      </div>
+    </div>
+
+    <div class="air-quality-section">
+      <div class="aqi-card">
+        <div class="aqi-number" id="aqiNumber">--</div>
+        <div class="aqi-info">
+          <h3 id="aqiLabel">Air Quality</h3>
+          <p id="aqiMessage">--</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-section">
+      <h3>💡 Tips</h3>
+      <div id="weatherTips" class="tips-list"></div>
+    </div>
   </div>
 
   <script src="script.js"></script>
